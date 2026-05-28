@@ -149,7 +149,7 @@ function InviteStep({ onAccept }) {
   const yesButtonRef = useRef(null);
   const noButtonRef = useRef(null);
   const lastEscapeIndex = useRef(-1);
-  const [noPosition, setNoPosition] = useState({ left: 'calc(50% + 62px)', top: '50%' });
+  const [noPosition, setNoPosition] = useState({ left: '50%', top: 'calc(50% + 82px)' });
 
   const moveNoButton = (event) => {
     event.preventDefault();
