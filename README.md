@@ -1,8 +1,8 @@
 # Will You Go On a Date With Me?
 
-Interaktivna React/Vite mini-aplikacija sa Three.js srcem u pozadini, pitanjima kroz više koraka i slanjem odgovora na webhook.
+An interactive React/Vite mini app with a Three.js heart in the background, multi-step questions, and answer submission to a webhook.
 
-## Struktura
+## Structure
 
 ```text
 date-app/
@@ -20,57 +20,57 @@ date-app/
       HeartBackground.jsx
 ```
 
-## Lokalni setup
+## Local Setup
 
-1. Instaliraj dependencies:
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Napravi lokalni env fajl:
+2. Create a local env file:
 
 ```bash
 cp .env.example .env
 ```
 
-3. Pokreni aplikaciju:
+3. Start the app:
 
 ```bash
 npm run dev
 ```
 
-## Backend bez vlastitog servera: Formspree
+## Backend Without Your Own Server: Formspree
 
-Najjednostavnija opcija je Formspree jer dobiješ URL endpoint i odgovori stižu u njihov dashboard i na email.
+The simplest option is Formspree because you get a URL endpoint, and responses arrive in their dashboard and by email.
 
-1. Otvori `https://formspree.io/` i napravi account.
-2. Kreiraj novi form.
-3. Kopiraj endpoint koji izgleda ovako:
+1. Open `https://formspree.io/` and create an account.
+2. Create a new form.
+3. Copy the endpoint, which looks like this:
 
 ```text
 https://formspree.io/f/abcdwxyz
 ```
 
-4. U `.env` zalijepi URL:
+4. Paste the URL into `.env`:
 
 ```bash
 VITE_WEBHOOK_URL=https://formspree.io/f/abcdwxyz
 ```
 
-5. Restartuj dev server ako je već pokrenut.
+5. Restart the dev server if it is already running.
 
-Aplikacija šalje `POST` JSON payload:
+The app sends a `POST` JSON payload:
 
 ```json
 {
   "accepted": true,
-  "day": "Subota",
+  "day": "Saturday",
   "time": "20h",
   "food": "Pizza",
   "locationIndex": 1,
   "location": {
-    "label": "Iznenađenje 2",
+    "label": "Surprise 2",
     "lat": 43.8486,
     "lng": 18.3564,
     "mapsUrl": "https://maps.google.com/?q=43.8486,18.3564"
@@ -79,18 +79,18 @@ Aplikacija šalje `POST` JSON payload:
 }
 ```
 
-Lokacija se šalje tebi, ali se ne prikazuje na završnom ekranu.
+The location is sent to you, but it is not shown on the final screen.
 
-## Zamjena lokacija
+## Replacing Locations
 
-Lokacije su na vrhu `src/App.jsx` u konstanti `LOCATIONS`.
+Locations are at the top of `src/App.jsx` in the `LOCATIONS` constant.
 
-Promijeni samo `lat`, `lng` i `mapsUrl`:
+Change only `lat`, `lng`, and `mapsUrl`:
 
 ```js
 const LOCATIONS = [
   {
-    label: 'Iznenađenje 1',
+    label: 'Surprise 1',
     lat: 43.8563,
     lng: 18.4131,
     mapsUrl: 'https://maps.google.com/?q=43.8563,18.4131'
@@ -100,9 +100,9 @@ const LOCATIONS = [
 
 ## Deploy: Vercel
 
-Vercel je najbrža opcija za Vite aplikaciju i odmah dobiješ jedan link.
+Vercel is the fastest option for a Vite app, and you get a shareable link right away.
 
-1. Napravi GitHub repo i pushuj projekat:
+1. Create a GitHub repo and push the project:
 
 ```bash
 git init
@@ -113,9 +113,9 @@ git remote add origin YOUR_REPO_URL
 git push -u origin main
 ```
 
-2. Otvori `https://vercel.com/` i izaberi **Add New Project**.
-3. Importuj GitHub repo.
-4. Vercel će prepoznati Vite. Build komanda treba biti:
+2. Open `https://vercel.com/` and choose **Add New Project**.
+3. Import the GitHub repo.
+4. Vercel will detect Vite. The build command should be:
 
 ```bash
 npm run build
@@ -127,15 +127,15 @@ npm run build
 dist
 ```
 
-6. U Vercel projektu otvori **Settings → Environment Variables** i dodaj:
+6. In the Vercel project, open **Settings -> Environment Variables** and add:
 
 ```text
 VITE_WEBHOOK_URL=https://formspree.io/f/YOUR_FORM_ID
 ```
 
-7. Klikni deploy. Nakon deploya dobiješ URL koji možeš podijeliti.
+7. Click deploy. After deployment, you will get a URL you can share.
 
-## Build provjera
+## Build Check
 
 ```bash
 npm run build
