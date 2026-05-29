@@ -35,8 +35,11 @@ const FOODS = [
   { label: 'Pizza', icon: '🍕' },
   { label: 'Steak', icon: '🥩' },
   { label: 'Sushi', icon: '🍣' },
-  { label: 'Samo piće', icon: '🍷' }
+  { label: 'Samo piće', icon: '🍷' },
+  { label: 'Bioskop', icon: '🎬', movie: 'Film Obsession' }
 ];
+
+const CINEMA_OPTION = 'Bioskop';
 
 const initialAnswers = {
   accepted: false,
@@ -70,7 +73,8 @@ function App() {
 
     const payload = {
       ...answers,
-      location: selectedLocation,
+      location: answers.food === CINEMA_OPTION ? null : selectedLocation,
+      movie: answers.food === CINEMA_OPTION ? 'Obsession' : null,
       timestamp: new Date().toISOString()
     };
 
@@ -122,17 +126,26 @@ function App() {
           {step === 3 && (
             <FoodStep
               selectedFood={answers.food}
-              onSelect={(food) => updateAnswers({ food })}
-              onNext={() => setStep(4)}
+              onSelect={(food) =>
+                updateAnswers({
+                  food,
+                  locationIndex: food === CINEMA_OPTION ? null : answers.locationIndex
+                })
+              }
+              onNext={() => setStep(answers.food === CINEMA_OPTION ? 6 : 4)}
             />
           )}
 
-          {step === 4 && (
+          {step === 4 && answers.food !== CINEMA_OPTION && (
             <LocationStep
               selectedIndex={answers.locationIndex}
               onSelect={(locationIndex) => updateAnswers({ locationIndex })}
               onNext={() => setStep(5)}
             />
+          )}
+
+          {step === 6 && answers.food === CINEMA_OPTION && (
+            <CinemaStep onNext={() => setStep(5)} />
           )}
 
           {step === 5 && (
@@ -259,8 +272,8 @@ function ScheduleStep({ answers, onSelect, onNext }) {
 function FoodStep({ selectedFood, onSelect, onNext }) {
   return (
     <>
-      <p className="eyebrow">mood za večeru</p>
-      <h1>U kakvom si raspoloženju za hranu?</h1>
+      <p className="eyebrow">ponuda za dejt</p>
+      <h1>U kakvom si raspoloženju?</h1>
       <div className="optionGrid">
         {FOODS.map((food) => (
           <button
@@ -276,6 +289,18 @@ function FoodStep({ selectedFood, onSelect, onNext }) {
       </div>
       <button className="primaryButton nextButton" type="button" onClick={onNext} disabled={!selectedFood}>
         Dalje
+      </button>
+    </>
+  );
+}
+
+function CinemaStep({ onNext }) {
+  return (
+    <>
+      <p className="eyebrow">bioskop</p>
+      <h1>Film Obsession</h1>
+      <button className="primaryButton nextButton" type="button" onClick={onNext}>
+        Završiti
       </button>
     </>
   );
@@ -332,11 +357,17 @@ function FinalStep({ answers, sendStatus }) {
           <strong>Termin:</strong> {answers.time}
         </p>
         <p>
-          <strong>Hrana:</strong> {answers.food}
+          <strong>Izbor:</strong> {answers.food}
         </p>
-        <p>
-          <strong>Koordinate:</strong> {LOCATIONS[answers.locationIndex]?.label}
-        </p>
+        {answers.food === CINEMA_OPTION ? (
+          <p>
+            <strong>Film:</strong> Obsession
+          </p>
+        ) : (
+          <p>
+            <strong>Koordinate:</strong> {LOCATIONS[answers.locationIndex]?.label}
+          </p>
+        )}
       </div>
       {statusText && <p className={`sendStatus ${sendStatus}`}>{statusText}</p>}
     </>
